@@ -1,4 +1,6 @@
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -26,9 +28,16 @@ public class App {
         // exibir e manipular dados da aplicação
 
         for (Map<String,String> filme : listaDeFilmes) {
-            System.out.println("\u001b[42m\u001b[1mTítulo: " + filme.get("title") + "\u001b[m" + "\n");
 
-            System.out.println("\u001b[42m\u001b[1mURL da Imagem:\u001b[m " + filme.get("image") + "\n");
+            String urlImagem = filme.get("image");
+            String titulo = filme.get("title");
+            
+            InputStream inputStream = new URL(urlImagem).openStream();
+
+            String nomeArquivo = titulo + ".png";
+
+            var geradora = new GeradoraDeFigurinhas();
+            geradora.cria(inputStream, nomeArquivo);
 
             double classificacao = Double.parseDouble(filme.get("imDbRating"));
 
